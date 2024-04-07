@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send Data to Google Apps Script</title>
+</head>
+<body>
+  <!-- フォーム -->
+  <form id="dataForm">
+    <label for="someValue">Some Value:</label>
+    <input type="text" id="someValue" name="someValue" required>
+    <button type="submit">Send Data</button>
+  </form>
+
+  <!-- JavaScript -->
+  <script>
+    // フォームの送信イベントを処理する関数
+    function sendData(event) {
+      event.preventDefault(); // フォームのデフォルトの動作をキャンセル
+
+      var data = {
+        someValue: document.getElementById('someValue').value
+      };
+
+      // Google Apps ScriptのURL
+      var scriptUrl = 'https://script.google.com/a/macros/kamiyama.ac.jp/s/AKfycbz0-qrWYXRRxCizyhlxkuudniRLCtNbF6YGpATC1H15ZRTtmgDkky5NxjoB8dAXQ6CVLA/exec'
+      // データを送信
+      fetch(scriptUrl, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('Data sent successfully.');
+        } else {
+          alert('Failed to send data.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error occurred while sending data.');
+      });
+    }
+
+    // フォームの送信イベントを監視
+    document.getElementById('dataForm').addEventListener('submit', sendData);
+  </script>
+</body>
+</html>

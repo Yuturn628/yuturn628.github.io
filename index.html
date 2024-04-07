@@ -15,40 +15,33 @@
 
   <!-- JavaScript -->
   <script>
-    // フォームの送信イベントを処理する関数
-    function sendData(event) {
-      event.preventDefault(); // フォームのデフォルトの動作をキャンセル
+function sendData(event) {
+  event.preventDefault(); // フォームのデフォルトの動作をキャンセル
 
-      var data = {
-        someValue: document.getElementById('someValue').value
-      };
+  var data = new URLSearchParams();
+  data.append('someValue', document.getElementById('someValue').value);
 
-      // Google Apps ScriptのURL
-      var scriptUrl = 'https://script.google.com/a/macros/kamiyama.ac.jp/s/AKfycbz0-qrWYXRRxCizyhlxkuudniRLCtNbF6YGpATC1H15ZRTtmgDkky5NxjoB8dAXQ6CVLA/exec'
-      // データを送信
-      fetch(scriptUrl, {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-        mode: 'no-cors'
-      })
-      .then(response => {
-        if (response.ok) {
-          alert('Data sent successfully.');
-        } else {
-          alert('Failed to send data.');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Error occurred while sending data.');
-      });
+  var scriptUrl = 'https://script.google.com/a/macros/kamiyama.ac.jp/s/AKfycbz0-qrWYXRRxCizyhlxkuudniRLCtNbF6YGpATC1H15ZRTtmgDkky5NxjoB8dAXQ6CVLA/exec';
+  
+  fetch(scriptUrl, {
+    method: 'post',
+    // Content-Type ヘッダーは自動的に設定されます
+    body: data
+  })
+  .then(response => {
+    if (response.ok) {
+      alert('Data sent successfully.');
+    } else {
+      alert('Failed to send data.');
     }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Error occurred while sending data.');
+  });
+}
 
-    // フォームの送信イベントを監視
-    document.getElementById('dataForm').addEventListener('submit', sendData);
+document.getElementById('dataForm').addEventListener('submit', sendData);
   </script>
 </body>
 </html>
